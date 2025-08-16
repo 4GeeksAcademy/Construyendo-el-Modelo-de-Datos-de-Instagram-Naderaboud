@@ -38,7 +38,9 @@ class User(db.Model):
 
 class Post (db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+
+    __tablename__ = "post"
 
 
     def serialize(self):
@@ -51,7 +53,10 @@ class Media (db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     type: Mapped[MediaType] = mapped_column(Enum(MediaType), nullable=False)  
     url: Mapped[str] = mapped_column(String(255), nullable=False)
-    post_id: Mapped[int] = mapped_column(nullable=False)
+    post_id: Mapped[int] = mapped_column(ForeignKey("post.id"), nullable=False)
+
+    __tablename__ = "media"
+
 
     def serialize(self):
         return {
@@ -64,7 +69,11 @@ class Media (db.Model):
 
 class Comment (db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(String(255), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+
+
+    __tablename__ = "comment"
+
 
     def serialize(self):
         return {
